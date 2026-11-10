@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="color-scheme" content="only light">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Revived Detail — Tulsa, OK</title>
@@ -32,19 +33,7 @@
     --gold-accent: var(--gold);
     --border: var(--line);
     --header-bg: rgba(243, 234, 216, 0.94);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #0E1230; --bg-panel: #151A3E; --bg-raised: #1B2049;
-      --text: #F1E7CD; --text-soft: #B9B4D4; --accent: #5C79FF; --accent-text: #0A0D22;
-      --gold-accent: #E0BB63; --border: rgba(241, 231, 205, 0.16); --header-bg: rgba(14, 18, 48, 0.94);
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #0E1230; --bg-panel: #151A3E; --bg-raised: #1B2049;
-    --text: #F1E7CD; --text-soft: #B9B4D4; --accent: #5C79FF; --accent-text: #0A0D22;
-    --gold-accent: #E0BB63; --border: rgba(241, 231, 205, 0.16); --header-bg: rgba(14, 18, 48, 0.94);
+    color-scheme: light;
   }
 
   * { box-sizing: border-box; }
