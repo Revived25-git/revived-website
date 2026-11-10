@@ -607,3 +607,19 @@ nav.links .drawer-cta a.btn-outline { color: var(--text); border: 1.5px solid va
 .offer-card .offer-main b { font-size: 4rem; line-height: 1; }
 .offer-card .offer-main span { text-align: center; font-size: 1.15rem; line-height: 1.3; }
 .offer-card .offer-main span br { display: none; }
+
+/* icon carousel */
+.clean-slide-title { font-family: 'DM Mono', ui-monospace, monospace; font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; color: var(--blue); margin-bottom: 26px; }
+.clean-foot { justify-content: space-between; }
+.clean-foot-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+.clean-nav { display: flex; align-items: center; gap: 14px; }
+.clean-dots { display: flex; gap: 8px; margin-right: 6px; }
+.clean-dots i { width: 9px; height: 9px; border-radius: 50%; background: var(--border); display: block; }
+.clean-dots i.on { background: var(--text); }
+.clean-arrow { width: 52px; height: 52px; border-radius: 50%; border: 0; background: var(--bg-raised, #E8DFCB); cursor: pointer; display: grid; place-items: center; transition: background .15s; }
+.clean-arrow:hover { background: var(--blue); }
+.clean-arrow svg { width: 22px; height: 22px; fill: none; stroke: var(--text); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.clean-arrow:hover svg { stroke: #fff; }
+.clean-slide:not([hidden]) { animation: cleanfade .35s ease; }
+@keyframes cleanfade { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
+@media (max-width: 640px) { .clean-foot { flex-direction: column; align-items: stretch; } .clean-nav { justify-content: center; } .clean-foot-btns .btn { flex: 1; justify-content: center; } }
