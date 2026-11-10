@@ -623,3 +623,13 @@ nav.links .drawer-cta a.btn-outline { color: var(--text); border: 1.5px solid va
 .clean-slide:not([hidden]) { animation: cleanfade .35s ease; }
 @keyframes cleanfade { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
 @media (max-width: 640px) { .clean-foot { flex-direction: column; align-items: stretch; } .clean-nav { justify-content: center; } .clean-foot-btns .btn { flex: 1; justify-content: center; } }
+
+/* Google rating pill */
+.g-rating { display: inline-flex; align-items: center; gap: 10px; background: #fff; color: #1f2a44; border-radius: 999px; padding: 10px 20px 10px 14px; margin: 4px 0 22px; box-shadow: 0 6px 18px -8px rgba(9,15,62,.35); border: 1px solid var(--border); text-decoration: none; flex-wrap: nowrap; white-space: nowrap; transition: transform .15s, box-shadow .15s; }
+.g-rating:hover { transform: translateY(-2px); box-shadow: 0 10px 22px -8px rgba(9,15,62,.45); }
+.g-logo { width: 24px; height: 24px; flex: none; }
+.g-rating b { font-size: 1.1rem; }
+.g-stars { color: #F5B301; letter-spacing: 2px; font-size: 1.05rem; }
+.g-count { color: #5b6477; font-size: .95rem; }
+.g-read { font-weight: 700; border-bottom: 2px solid #c9cfdb; line-height: 1.2; }
+@media (max-width: 400px) { .g-rating { gap: 7px; padding: 9px 14px 9px 11px; } .g-count { font-size: .85rem; } .g-stars { letter-spacing: 0; } }
