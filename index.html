@@ -519,6 +519,8 @@
   .quote-done { padding: 34px 26px; text-align: center; }
   .quote-done h3 { font-size: 1.6rem; margin-bottom: 8px; }
   @media (max-width: 520px) { .svc-grid { grid-template-columns: 1fr; } }
+  .hq-embed { padding: 8px 12px 0; } .hq-embed iframe { display: block; margin: 0 auto; }
+  .quote-alt { text-align: center; margin: 4px 0 22px; font-size: .95rem; color: var(--text-soft); }
 
 </style>
 </head>
@@ -1321,40 +1323,16 @@
             <h2>Request a Quote</h2>
             <p class="sub">We call you back fast. No spam, ever.</p>
           </div>
-          <form class="quick-quote-form" id="quote-form" novalidate>
-            <div class="quick-quote-row">
-              <label>First name *<input type="text" name="first_name" autocomplete="given-name" required maxlength="60"></label>
-              <label>Last name<input type="text" name="last_name" autocomplete="family-name" maxlength="60"></label>
-            </div>
-            <div class="quick-quote-row">
-              <label>Phone *<input type="tel" name="phone" autocomplete="tel" inputmode="tel" required></label>
-              <label>Email<input type="email" name="email" autocomplete="email" maxlength="120"></label>
-            </div>
-            <label>Service address<input type="text" name="address" autocomplete="street-address" placeholder="Street, city, zip" maxlength="160"></label>
-            <div class="quick-quote-row">
-              <label>Vehicle<input type="text" name="vehicle" placeholder="2023 Toyota Tacoma" maxlength="120"></label>
-              <label>Needed by<input type="text" name="needed_by" placeholder="This Saturday, weekdays, flexible..." maxlength="120"></label>
-            </div>
-            <fieldset class="svc-fieldset">
-              <legend>What do you need?</legend>
-              <div class="svc-grid" id="svc-grid">
-                <label class="svc-opt"><input type="checkbox" name="svc_text" value="Interior Cleaning"><span>Interior Cleaning</span></label>
-                <label class="svc-opt"><input type="checkbox" name="svc_text" value="Exterior Cleaning"><span>Exterior Cleaning</span></label>
-                <label class="svc-opt"><input type="checkbox" name="svc_text" value="Full Detail"><span>Full Detail</span></label>
-                <label class="svc-opt"><input type="checkbox" name="svc_text" value="Revived Care Plan"><span>Revived Care Plan</span></label>
-              </div>
-            </fieldset>
-            <label>Anything we should know?<textarea name="message" rows="3" maxlength="1000" placeholder="Pet hair in the back seat, bug splatter on the hood..."></textarea></label>
-            <div class="hp-field" aria-hidden="true"><label>Website<input type="text" name="company_site" tabindex="-1" autocomplete="off"></label></div>
-            <label class="consent"><input type="checkbox" name="sms_consent"><span>I agree to get text messages from Revived Detail about my quote and appointment.</span></label>
-            <p class="form-error" id="quote-error" role="alert" hidden></p>
-            <button type="submit" class="btn btn-primary" id="quote-submit" style="width:100%; justify-content:center;">Send Quote Request</button>
-            <p class="fine">By submitting, you agree to receive text messages (SMS/MMS) from Revived Detail at the number provided about your inquiry, estimates and appointments. Msg frequency varies. Msg &amp; data rates may apply. Reply STOP to cancel, HELP for help. Consent is not a condition of purchase. We never sell your data.</p>
-          </form>
+          <div class="hq-embed">
+            <!-- Revived HQ lead form -->
+            <iframe id="revived-lead-form" src="https://www.revivedhq.app/lead?embed=1" title="Get a quote" style="border:none;width:100%;max-width:640px;height:820px;" loading="lazy"></iframe>
+            <!-- End Revived HQ lead form -->
+          </div>
           <div class="quote-done" id="quote-done" hidden>
             <h3>Thanks! We got your info.</h3>
             <p>We will reach out shortly. Need us sooner? Call <a href="tel:918-200-9554">918-200-9554</a>.</p>
           </div>
+          <p class="quote-alt">Prefer to call or text? <a href="tel:918-200-9554">918-200-9554</a></p>
         </div>
       </div>
     </section>
@@ -2084,51 +2062,15 @@
   window.addEventListener('hashchange', routeFromHash);
   routeFromHash();
 
-  var SB_URL='https://mtgrnidrpmvjegqscwsp.supabase.co', SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10Z3JuaWRycG12amVncXNjd3NwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEzOTE3NDcsImV4cCI6MjEwNjk2Nzc0N30.yC1A_g03qrdDEpKqy0uapFUfJn__WpGKc6z783zSDEA';
-  function sbRpc(fn, body){
-    return fetch(SB_URL+'/rest/v1/rpc/'+fn, {method:'POST', headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'}, body:JSON.stringify(body||{})})
-      .then(function(r){ return r.json().then(function(j){ if(!r.ok){ var e=new Error((j&&j.message)||'Something went wrong'); throw e; } return j; }); });
-  }
-  var qf=document.getElementById('quote-form');
-  if(qf){
-    // pull the live service list from the CRM (falls back to the four basic options already on the page)
-    sbRpc('lead_form_config',{}).then(function(cfg){
-      var svcs=(cfg&&cfg.catalog&&cfg.catalog.services)||[]; if(!svcs.length) return;
-      var hidden=(cfg.svc&&cfg.svc.hidden)||[], labels=(cfg.svc&&cfg.svc.labels)||{}, order=(cfg.svc&&cfg.svc.order)||[];
-      var byId={}; svcs.forEach(function(x){byId[x.id]=x;});
-      var list=order.filter(function(id){return byId[id]&&hidden.indexOf(id)<0;}).map(function(id){return byId[id];});
-      svcs.forEach(function(x){ if(list.indexOf(x)<0 && hidden.indexOf(x.id)<0) list.push(x); });
-      var grid=document.getElementById('svc-grid'); if(!grid||!list.length) return;
-      grid.innerHTML='';
-      list.forEach(function(x){
-        var l=document.createElement('label'); l.className='svc-opt';
-        var i=document.createElement('input'); i.type='checkbox'; i.name='svc_id'; i.value=x.id;
-        var sp=document.createElement('span'); sp.textContent=labels[x.id]||x.name;
-        l.appendChild(i); l.appendChild(sp); grid.appendChild(l);
-      });
-    }).catch(function(){});
-    qf.addEventListener('submit', function(e){
-      e.preventDefault();
-      var err=document.getElementById('quote-error'), btn=document.getElementById('quote-submit');
-      err.hidden=true;
-      var f=new FormData(qf);
-      if(f.get('company_site')){ return; } // honeypot: bots fill this in
-      var first=(f.get('first_name')||'').trim(), phone=(f.get('phone')||'').replace(/\D/g,'');
-      if(!first){ err.textContent='Please enter your first name.'; err.hidden=false; return; }
-      if(phone.length===11 && phone[0]==='1') phone=phone.slice(1);
-      if(phone.length!==10){ err.textContent='Please enter a 10-digit phone number.'; err.hidden=false; return; }
-      var payload={first_name:first, last_name:f.get('last_name')||'', phone:phone, email:f.get('email')||'', address:f.get('address')||'',
-        vehicle:f.get('vehicle')||'', needed_by:f.get('needed_by')||'', message:f.get('message')||'', source:'website',
-        sms_consent: !!f.get('sms_consent'), service_ids:f.getAll('svc_id'), service:f.getAll('svc_text').join(', ')};
-      btn.disabled=true; var old=btn.textContent; btn.textContent='Sending...';
-      sbRpc('submit_lead',{p:payload}).then(function(){
-        qf.hidden=true; var d=document.getElementById('quote-done'); d.hidden=false; d.scrollIntoView({behavior:'smooth',block:'center'});
-      }).catch(function(ex){
-        err.textContent=(ex&&ex.message&&ex.message.indexOf('Please')===0)?ex.message:'We could not send that. Please call us at 918-200-9554.'; err.hidden=false;
-        btn.disabled=false; btn.textContent=old;
-      });
-    });
-  }
+  // Revived HQ embedded lead form: auto-height, and a thank-you message instead of the old Wix redirect
+  window.addEventListener('message', function(e){
+    if(e.origin!=='https://www.revivedhq.app'||!e.data) return;
+    var f=document.getElementById('revived-lead-form');
+    if(e.data.revivedLeadHeight&&f) f.style.height=e.data.revivedLeadHeight+'px';
+    if(e.data.revivedLeadRedirect&&f){
+      f.parentNode.hidden=true; var d=document.getElementById('quote-done'); d.hidden=false; d.scrollIntoView({behavior:'smooth',block:'center'});
+    }
+  });
 </script>
 
 <script>
