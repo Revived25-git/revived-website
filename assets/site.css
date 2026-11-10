@@ -585,3 +585,19 @@ nav.links .drawer-cta a.btn-outline { color: var(--text); border: 1.5px solid va
 }
 @media (max-width: 520px) { header .logo img { height: 54px; } }
 @media (min-width: 1101px) { nav.links { align-items: baseline; } .nav-dropdown { display: block; } }
+
+/* offer card: even, centered layout */
+.offer-card { text-align: center; padding: 26px 24px 24px; }
+.offer-card .offer-main { display: grid; grid-template-columns: auto auto; justify-content: center; align-items: center; column-gap: 14px; margin: 8px 0 6px; }
+.offer-card .offer-main span { text-align: left; font-size: 1.1rem; line-height: 1.25; }
+.offer-card .offer-sub { margin: 4px 0 18px; }
+.offer-card .offer-actions { justify-content: center; gap: 22px; }
+.offer-card .offer-kicker { letter-spacing: .02em; }
+@media (max-width: 900px) { .offer-card.offer-photo { margin: -34px 16px 0; } }
+/* contact: call/email lives below the form */
+.contact-alt { padding: 10px 0 70px; }
+.contact-alt .wrap { text-align: center; max-width: 760px; }
+.contact-alt h2 { margin-bottom: 8px; }
+.contact-alt p { color: var(--text-soft); margin: 0 auto 22px; max-width: 52ch; }
+.contact-alt-list { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px 40px; }
+.contact-alt-list .contact-info-item { text-align: left; }
