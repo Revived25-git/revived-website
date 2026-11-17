@@ -10,7 +10,8 @@
     function show(n){ cur=(n+sl.length)%sl.length; Array.prototype.forEach.call(sl,function(x,i){ x.hidden=(i!==cur); }); var sh=cc.closest('section').querySelector('.section-head'), c=sl[cur]; if(sh&&c){ var e=sh.querySelector('.eyebrow'),h=sh.querySelector('h2'),p=sh.querySelector('p'); if(e)e.innerHTML=c.getAttribute('data-eyebrow'); if(h)h.innerHTML=c.getAttribute('data-h2'); if(p)p.innerHTML=c.getAttribute('data-p'); } Array.prototype.forEach.call(dots,function(d,i){ d.classList.toggle('on',i===cur); }); }
     Array.prototype.forEach.call(document.querySelectorAll('.clean-arrow'),function(b){ b.addEventListener('click',function(){ show(cur+parseInt(b.getAttribute('data-dir'),10)); }); });
     Array.prototype.forEach.call(dots,function(d,i){ d.addEventListener('click',function(){ show(i); }); d.style.cursor='pointer'; }); }
-  window.addEventListener('message',function(e){
+  document.querySelectorAll('.plan-pill').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('.plan-pill').forEach(function(x){x.classList.remove('on')});b.classList.add('on');var n=document.getElementById('plan-note');if(n)n.textContent='Selected: '+b.textContent+' ('+b.dataset.note+')';});});
+window.addEventListener('message',function(e){
     if(e.origin!=='https://www.revivedhq.app'||!e.data) return;
     var f=document.getElementById('revived-lead-form');
     if(e.data.revivedLeadHeight&&f) f.style.height=e.data.revivedLeadHeight+'px';
